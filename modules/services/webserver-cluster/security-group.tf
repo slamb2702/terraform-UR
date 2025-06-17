@@ -12,58 +12,24 @@ resource "aws_security_group" "instance" {
 resource "aws_security_group" "alb" {
   name = "${var.cluster_name}-alb"
 
-  ingress = [
-    {
-      from_port   = local.http_port
-      to_port     = local.http_port
-      protocol    = local.tcp_protocol
-      cidr_blocks = local.all_ips
+}
 
-      ipv6_cidr_blocks = []
-      prefix_list_ids  = []
-      security_groups  = []
-      self             = false
-    },
-    {
-      cidr_blocks = local.all_ips
-      description = "HTTPS"
-      from_port   = 443
-      to_port     = 443
-      protocol    = "tcp"
+resource "aws_security_group_rule" "allow_http_inbound" {
+  type              = "ingress"
+  security_group_id = aws_security_group.alb.id
 
-      ipv6_cidr_blocks = []
-      prefix_list_ids  = []
-      security_groups  = []
-      self             = false
-    },
+  from_port   = local.http_port
+  to_port     = local.http_port
+  protocol    = local.tcp_protocol
+  cidr_blocks = local.all_ips
+}
 
-    {
-      cidr_blocks = local.all_ips
-      description = "SSH"
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
+resource "aws_security_group_rule" "allow_http_outbound" {
+  type              = "egress"
+  security_group_id = aws_security_group.alb.id
 
-      ipv6_cidr_blocks = []
-      prefix_list_ids  = []
-      security_groups  = []
-      self             = false
-    }
-  ]
-
-  egress = [
-    {
-      cidr_blocks = local.all_ips
-
-      from_port   = local.any_port
-      to_port     = local.any_port
-      protocol    = local.any_protocol
-      description = "Allow outbound requests"
-
-      ipv6_cidr_blocks = []
-      prefix_list_ids  = []
-      security_groups  = []
-      self             = false
-    }
-  ]
+  from_port   = local.http_port
+  to_port     = local.http_port
+  protocol    = local.tcp_protocol
+  cidr_blocks = local.all_ips
 }
