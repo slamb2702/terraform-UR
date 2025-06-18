@@ -9,4 +9,11 @@ module "webserver_cluster" {
   instance_type = "t2.micro"
   min_size      = 2
   max_size      = 10
+
+  enable_autoscaling = var.enable_autoscaling
+
+  custom_tags = {
+    Owner     = "big-dog"
+    ManagedBy = "terraform"
+  }
 }
