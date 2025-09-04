@@ -8,13 +8,3 @@ terraform {
     }
   }
 }
-
-provider "aws" {
-  region = "us-east-2"
-  alias  = "primary"
-}
-
-provider "aws" {
-  region = "eu-west-2"
-  alias  = "replica"
-}

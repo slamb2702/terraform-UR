@@ -1,6 +1,6 @@
 
 resource "aws_lb" "example" {
-  name               = "terraform-asg-example"
+  name               = var.cluster_name
   load_balancer_type = "application"
   subnets            = data.aws_subnets.default.ids
   security_groups    = [aws_security_group.alb.id]
